@@ -101,11 +101,17 @@ public Actions RunStep(States states){
 #### *Vector2* rel_pos12, rel_pos21  
 rel_pos12は機体2（緑）から見た機体1（赤）のワールド座標の相対値。　　
 rel_pos21はその逆。観測側の機体の角度は考慮していない。
-#### *float* rel_theta12, rel_theta21  
-rel_theta12は機体2（緑）から見た機体1（赤）の角度の相対値。  
-rel_theta21はその逆。
-観測側の機体から見て右側を0度として 左回りに360度まで定義されている。  
+https://github.com/shinjimp3/RLFighter/blob/master/rel_pos.png?raw=true
+
 #### *float* target_theta12, target_theta21
 target_theta12は機体2（緑）から機体1（赤）がどのように見えるかという値。
 target_thteta21はその逆。  
 観測側の機体から見て右側を0度として 左回りに360度まで定義されている。
+https://github.com/shinjimp3/RLFighter/blob/master/target_theta.png?raw=true
+
+#### *float* rel_theta12, rel_theta21  
+rel_theta12は機体2（緑）から見た機体1（赤）の角度の相対値。  
+rel_theta21はその逆。
+観測側の機体から見て右側を0度として 左回りに360度まで定義されている。  
+https://github.com/shinjimp3/RLFighter/blob/master/rel_theta.png?raw=true
+
