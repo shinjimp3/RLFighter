@@ -27,37 +27,37 @@ RunStepメソッドは状態（Statesクラス）を引数に取り，行動（A
 ランダムな行動を取らせるならRunStepメソッドを以下のようにしましょう。
 ```
 public Actions RunStep(States states){
-		//Playerクラスから継承した actions に適当な行動を設定する。
+    //Playerクラスから継承した actions に適当な行動を設定する。
     actions.yaw = Random.value;
     actions.speed = Random.value;
     actions.shoot = Random.value < 0.8f;
     actions = Policy (next_obs_states);
 		
     return actions;
-	}
+}
 ```
 もう少しマシな強化学習エージェントにしたければ以下のようにしましょう。
 ```
 public Actions RunStep(States states){
-		//制御周期の設定
+    //制御周期の設定
     //環境はゲーム内時間0.1s毎とかなり細かめに状態を遷移させますが，エージェントの制御周期をこれに合わせる必要はありません。
     //0.1sのstep_width（整数）倍でエージェントを動かすこともできます。この設定をいじってSMDPにしても良いでしょう。
     if (passed_time < step_width) {
-			passed_time++;
-			return actions;
-		}
-		passed_time = 0;
+	passed_time++;
+	return actions;
+    }
+    passed_time = 0;
 		
     //Playerクラスから継承した next_obs_states に 環境から与えられた states を代入
     //ここで内部状態を定義するメソッドを挟んでも良い。（位置を離散化するとか）
     next_obs_states = states;
     
-		//報酬関数 R(s,a,s')
+    //報酬関数 R(s,a,s')
     //報酬は環境ではなくエージェントに設定してもらいます。
     reward = CalcReward (obs_states, actions, next_obs_states);
     
     //QtableとかValueFunctionとか更新
-		Learn (obs_states, actions, next_obs_states, reward);
+    Learn (obs_states, actions, next_obs_states, reward);
 		
     //方策 a=pi(s)
     actions = Policy (next_obs_states);
@@ -66,7 +66,7 @@ public Actions RunStep(States states){
     obs_states = next_obs_states; 
     
     return actions;
-	}
+}
 ```
 
 ### Actions クラス
@@ -100,12 +100,12 @@ public Actions RunStep(States states){
 それぞれ各機体（赤, 緑）が弾を撃っているかどうか。  
 #### *Vector2* rel_pos12, rel_pos21  
 rel_pos12は機体2（緑）から見た機体1（赤）のワールド座標の相対値。　　
-rel_pos21はその逆。__観測側の機体の角度は考慮していない。__
+rel_pos21はその逆。観測側の機体の角度は考慮していない。
 #### *float* rel_theta12, rel_theta21  
 rel_theta12は機体2（緑）から見た機体1（赤）の角度の相対値。  
 rel_theta21はその逆。
-__観測側の機体から見て__右側を0度として 左回りに360度まで定義されている。  
+観測側の機体から見て右側を0度として 左回りに360度まで定義されている。  
 #### *float* target_theta12, target_theta21
 target_theta12は機体2（緑）から機体1（赤）がどのように見えるかという値。
 target_thteta21はその逆。  
-__観測側の機体から見て__右側を0度として 左回りに360度まで定義されている。
+観測側の機体から見て右側を0度として 左回りに360度まで定義されている。
