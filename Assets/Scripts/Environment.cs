@@ -14,7 +14,7 @@ public class Environment{
 		shoot_time_passed = 0;
 		step_i = 0;
 
-		_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10);//set initial pos and theta
+		_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10, 10);//set initial pos and theta
 
 
 		red_actions = new Actions ();
@@ -92,7 +92,7 @@ public class Environment{
 					                    bullet_life
 				                    );
 				bullets_info.Add (bullet_info);
-
+				_states.bullet_num1--;
 			}
 			if (green_actions.shoot) {
 				theta = _states.theta2;
@@ -102,6 +102,7 @@ public class Environment{
 					                    bullet_life
 				                    );
 				bullets_info.Add (bullet_info);
+				_states.bullet_num2--;
 			}
 		}
 		shoot_time_passed++;

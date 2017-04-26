@@ -9,13 +9,15 @@ public class States{
 	//	PosAngle pos_ang2 = _states.pos
 	//
 	//}
-	public States(Vector2 pos1, Vector2 pos2, float theta1, float theta2, int HP){
+	public States(Vector2 pos1, Vector2 pos2, float theta1, float theta2, int HP, int bullet_num){
 		this.pos1 = pos1;
 		this.pos2 = pos2;
 		this.theta1 = theta1;
 		this.theta2 = theta2;
 		this.HP1 = HP;
 		this.HP2 = HP;
+		this.bullet_num1 = bullet_num;
+		this.bullet_num2 = bullet_num;
 	}
 
 	public States ShallowCopy(){

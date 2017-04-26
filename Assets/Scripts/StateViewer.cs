@@ -9,6 +9,8 @@ public class StateViewer : MonoBehaviour {
 	private List<GameObject> bullets;
 	UnityEngine.UI.Text hp_red;
 	UnityEngine.UI.Text hp_green;
+	UnityEngine.UI.Text bullet_num_red;
+	UnityEngine.UI.Text bullet_num_green;
 	public Transform camera;
 	Vector2 camera_move_dist;
 	Vector2 camera_pos_target;
@@ -22,6 +24,9 @@ public class StateViewer : MonoBehaviour {
 		}
 		hp_red = GameObject.Find ("HPred").GetComponent<UnityEngine.UI.Text>();
 		hp_green = GameObject.Find ("HPgreen").GetComponent<UnityEngine.UI.Text>();
+		bullet_num_red = GameObject.Find ("BulletNumred").GetComponent<UnityEngine.UI.Text>();
+		bullet_num_green = GameObject.Find ("BulletNumgreen").GetComponent<UnityEngine.UI.Text>();
+
 		camera_move_dist = new Vector2 (200f, 150f);
 		camera_pos_target = new Vector2(0,0);
 	}
@@ -64,6 +69,9 @@ public class StateViewer : MonoBehaviour {
 		hp_red.text = "HP:"+states.HP1;
 		hp_green.text = "HP:"+states.HP2;
 
+		//show bullet num
+		bullet_num_red.text = "bullet:"+states.bullet_num1;
+		bullet_num_green.text = "bullet:"+states.bullet_num2;
 
 		dist = Mathf.Max (200f, dist);
 		camera.position = (new Vector3 (camera_pos_target.x, dist*1.5f, camera_pos_target.y) + 2f*camera.position) / 3f;
