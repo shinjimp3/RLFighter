@@ -97,8 +97,8 @@ public Actions RunStep(States states){
 #### *bool* isShooting1, isShooting2  
 それぞれ各機体（赤, 緑）が弾を撃っているかどうか。  
 #### *bool* isDamaged1, isDamaged2  
-それぞれ各機体（赤, 緑）が弾を撃っているかどうか。  
-#### *Vector2* rel_pos12, rel_pos21  
+それぞれ各機体（赤, 緑）に弾が当たっているかどうか。  
+#### *Vector2* rel_pos12, rel_pos21  
 rel_pos12は機体2（緑）から見た機体1（赤）のワールド座標の相対値。  
 rel_pos21はその逆。観測側の機体の角度は考慮していない。  
 ![rel_pos](https://github.com/shinjimp3/RLFighter/blob/master/rel_pos.png?raw=true)
