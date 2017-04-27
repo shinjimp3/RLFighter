@@ -54,7 +54,7 @@ public class EpisodeController : MonoBehaviour {
 			step_time_passed = 0f;
 		}
 		if(drawing){
-			state_viewer.Draw (states, red_actions, green_actions, env.GetBulletsPosAng ());
+			state_viewer.Draw (states, red_actions, green_actions, env.GetBulletsPosAng (), step_time_passed/env.GetDt());
 		}
 		step_time_passed += Time.deltaTime;
 	}
