@@ -10,8 +10,11 @@ public class Environment{
 		bullet_speed = 300f * dt;
 		hit_radius = 30f;
 		bullet_life = 50;
-		shoot_width = 4;
+		shoot_width = 2;
 		shoot_time_passed = 0;
+		reload_width = 4;
+		reload_time_passed_red = 0;
+		reload_time_passed_green = 0;
 		step_i = 0;
 
 		_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10, 10);//set initial pos and theta
@@ -45,8 +48,13 @@ public class Environment{
 	private float bullet_speed;
 	private float hit_radius;
 	private int bullet_life;
+
 	private int shoot_width;
 	private int shoot_time_passed;
+	private int reload_width;
+	private int reload_time_passed_red;
+	private int reload_time_passed_green;
+
 	private int step_i;
 
 	private List<Bullet> bullets_info; 
@@ -84,7 +92,7 @@ public class Environment{
 		//Add bullets
 		if (shoot_time_passed == shoot_width) {
 			shoot_time_passed = 0;
-			if (red_actions.shoot) {
+			if (red_actions.shoot && _states.bullet_num1 > 0) {
 				theta = _states.theta1;
 				Bullet bullet_info = new Bullet (
 					                    _states.pos1 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
@@ -94,7 +102,7 @@ public class Environment{
 				bullets_info.Add (bullet_info);
 				_states.bullet_num1--;
 			}
-			if (green_actions.shoot) {
+			if (green_actions.shoot && _states.bullet_num2 > 0) {
 				theta = _states.theta2;
 				Bullet bullet_info = new Bullet (
 					                    _states.pos2 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
@@ -106,6 +114,23 @@ public class Environment{
 			}
 		}
 		shoot_time_passed++;
+
+		//reload bullets
+		if (!red_actions.shoot && _states.bullet_num1 < 10) {
+			reload_time_passed_red++;
+			if (reload_time_passed_red == reload_width) {
+				reload_time_passed_red = 0;
+				_states.bullet_num1++;
+			}
+		}
+		if (!green_actions.shoot && _states.bullet_num2 < 10) {
+			reload_time_passed_green++;
+			if (reload_time_passed_green == reload_width) {
+				reload_time_passed_green = 0;
+				_states.bullet_num2++;
+			}
+		}
+
 
 		//  judge hit -> reduce bullet's life -> move bullets ->  remove bullets ->  -> 
 		_states.isDamaged1 = false;
