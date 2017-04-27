@@ -8,7 +8,7 @@ public class Environment{
 		max_speed = 250f * dt;
 		yaw_speed = 135f * dt;
 		bullet_speed = 300f * dt;
-		hit_radius = 30f;
+		hit_radius = 20f;
 		bullet_life = 50;
 		shoot_width = 2;
 		shoot_time_passed = 0;
@@ -87,7 +87,7 @@ public class Environment{
 
 	void ControlBullets(){
 		float theta, length;
-		length = hit_radius + 1f;
+		length = hit_radius + 0.1f;
 
 		//Add bullets
 		if (shoot_time_passed == shoot_width) {
