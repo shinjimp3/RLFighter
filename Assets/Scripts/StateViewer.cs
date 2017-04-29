@@ -11,6 +11,9 @@ public class StateViewer : MonoBehaviour {
 	UnityEngine.UI.Text hp_green;
 	UnityEngine.UI.Text bullet_num_red;
 	UnityEngine.UI.Text bullet_num_green;
+	UnityEngine.UI.Text step_i_text;
+	UnityEngine.UI.Text episode_i_text;
+
 	public Transform camera;
 	Vector2 camera_move_dist;
 	Vector2 camera_pos_target;
@@ -33,6 +36,8 @@ public class StateViewer : MonoBehaviour {
 		hp_green = GameObject.Find ("HPgreen").GetComponent<UnityEngine.UI.Text>();
 		bullet_num_red = GameObject.Find ("BulletNumred").GetComponent<UnityEngine.UI.Text>();
 		bullet_num_green = GameObject.Find ("BulletNumgreen").GetComponent<UnityEngine.UI.Text>();
+		step_i_text = GameObject.Find ("Step").GetComponent<UnityEngine.UI.Text>();
+		episode_i_text = GameObject.Find ("Episode").GetComponent<UnityEngine.UI.Text>();
 
 		camera_move_dist = new Vector2 (200f, 150f);
 		camera_pos_target = new Vector2(0,0);

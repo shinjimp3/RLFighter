@@ -27,10 +27,10 @@ public class Environment{
 		green_actions = new Actions ();
 		bullets_info = new List<Bullet> ();
 
-		step_i_text = GameObject.Find ("Step").GetComponent<UnityEngine.UI.Text>();
-		episode_i_text = GameObject.Find ("Episode").GetComponent<UnityEngine.UI.Text>();
-
 		train_toggle = GameObject.Find ("TrainToggle").GetComponent<UnityEngine.UI.Toggle> ();
+		endless_toggle = GameObject.Find ("EndlessToggle").GetComponent<UnityEngine.UI.Toggle> ();
+		_states.train = train_toggle.isOn;
+		_states.endless = endless_toggle.isOn;
 	}
 
 	//states, bullets and actions
@@ -63,20 +63,18 @@ public class Environment{
 	//time parameter and viewer
 	private int step_i;
 	private int episode_i;
-	UnityEngine.UI.Text step_i_text;
-	UnityEngine.UI.Text episode_i_text;
 
 	UnityEngine.UI.Toggle train_toggle;
-
+	UnityEngine.UI.Toggle endless_toggle;
 
 	public States Run(Actions red_actions, Actions green_actions){
 		this.red_actions = red_actions;
 		this.green_actions = green_actions;
 		_states.train = train_toggle.isOn;
+		_states.endless = endless_toggle.isOn;
 		ControlPlayer ();
 		ControlBullets ();
-		step_i++;
-		step_i_text.text = "step:" + step_i;
+		_states.step_i++;
 		return states;
 
 	}
@@ -85,8 +83,7 @@ public class Environment{
 		_states = initial_states;
 		bullets_info.Clear ();
 		step_i = 0;
-		episode_i++;
-		episode_i_text.text = "episode:" + episode_i;
+		_states.episode_i++;
 	}
 
 	void ControlPlayer(){

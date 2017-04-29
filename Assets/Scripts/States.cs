@@ -25,6 +25,10 @@ public class States{
 	}
 
 	public bool train;
+	public bool endless;
+	public int step_i;
+	public int episode_i;
+
 	public Vector2 pos1;
 	public Vector2 pos2;
 	public float theta1;
