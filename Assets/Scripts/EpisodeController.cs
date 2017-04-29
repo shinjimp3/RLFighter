@@ -13,6 +13,9 @@ public class EpisodeController : MonoBehaviour {
 	private float time_passed = 0f;
 	private float step_time_passed = 0f;
 	private float step_width = 0.2f;
+	private bool episode_end = false;
+	private float loss_time = 3f;
+	private float loss_time_passed;
 
 	private Environment env;
 
@@ -34,6 +37,7 @@ public class EpisodeController : MonoBehaviour {
 	private States states;
 	private Actions red_actions, green_actions;
 
+
 	void Start(){
 		
 	}
@@ -48,21 +52,35 @@ public class EpisodeController : MonoBehaviour {
 		}
 			
 		if (!drawing || step_time_passed > env.GetDt()) {
-			if (states.HP1 <= 0 || states.HP2 <= 0 || 
-				(!states.endless && states.bullet_num1 <= 0 && states.bullet_num2 <= 0)) {
-				PlayerRedReset ();
-				PlayerGreenReset ();
-				env.Reset ();
+			if (!episode_end) {
+				red_actions = PlayerRedRunStep (states);
+				green_actions = PlayerGreenRunStep (states);
 			}
-			red_actions = PlayerRedRunStep (states);
-			green_actions = PlayerGreenRunStep (states);
 			states = env.Run (red_actions, green_actions);
 			step_time_passed = 0f;
+			if ((states.HP1 <= 0 || states.HP2 <= 0 || 
+				(!states.endless && states.bullet_num1 <= 0 && states.bullet_num2 <= 0))
+				&&!episode_end) {
+				episode_end = true;
+				PlayerRedEndEpisode (states);
+				PlayerGreenEndEpisode (states);
+				state_viewer.ShowResult (states);
+			}
 		}
 		if(drawing){
 			state_viewer.Draw (states, red_actions, green_actions, env.GetBulletsPosAng (), step_time_passed/env.GetDt());
+
 		}
 
+		if (loss_time_passed > loss_time || (!drawing&&episode_end)) {
+			env.Reset ();
+			episode_end = false;
+			loss_time_passed = 0f;
+			state_viewer.ShowResult (env.initial_states);
+		}
+
+		if (episode_end)
+			loss_time_passed += Time.deltaTime;
 		step_time_passed += Time.deltaTime;
 	}
 
@@ -130,22 +148,22 @@ public class EpisodeController : MonoBehaviour {
 	}
 
 
-	public void PlayerRedReset(){
+	public void PlayerRedEndEpisode(States states){
 		switch (player_type_red) {
 		case 0:
-			random_player_red.Reset ();
+			random_player_red.EndEpisode (states);
 			break;
 		case 1:
-			human_player_red.Reset ();
+			human_player_red.EndEpisode (states);
 			break;
 		case 2:
-			hand_coded_player_red.Reset ();
+			hand_coded_player_red.EndEpisode (states);
 			break;
 		case 3:
-			agent_player1_red.Reset ();
+			agent_player1_red.EndEpisode (states);
 			break;
 		case 4:
-			agent_player2_red.Reset ();
+			agent_player2_red.EndEpisode (states);
 			break;
 		default :
 			Debug.LogError ("Player red type settings are illegal.", transform);
@@ -153,22 +171,22 @@ public class EpisodeController : MonoBehaviour {
 		}
 	}
 
-	public void PlayerGreenReset(){
+	public void PlayerGreenEndEpisode(States states){
 		switch (player_type_green) {
 		case 0:
-			random_player_green.Reset ();
+			random_player_green.EndEpisode (states);
 			break;
 		case 1:
-			human_player_green.Reset ();
+			human_player_green.EndEpisode (states);
 			break;
 		case 2:
-			hand_coded_player_green.Reset ();
+			hand_coded_player_green.EndEpisode (states);
 			break;
 		case 3:
-			agent_player1_green.Reset ();
+			agent_player1_green.EndEpisode (states);
 			break;
 		case 4:
-			agent_player2_green.Reset ();
+			agent_player2_green.EndEpisode (states);
 			break;
 		default :
 			Debug.LogError ("Player green type settings are illegal.", transform);
