@@ -5,7 +5,7 @@ using UnityEngine;
 public class Environment{
 	public Environment(){
 		dt = 0.1f;
-		min_speed = 100f * dt;
+		min_speed = 150f * dt;
 		max_speed = 250f * dt;
 		yaw_speed = 135f * dt;
 		bullet_speed = 300f * dt;
@@ -31,7 +31,7 @@ public class Environment{
 		else
 			initial_bullet_num = 50;
 		
-		_initial_states = new States (new Vector2(0f,50f), new Vector2(500f, 150f), 0f, 180f, 10, initial_bullet_num);
+		_initial_states = new States (new Vector2(0f,50f), new Vector2(500f, 150f), 0f, 180f, 5, initial_bullet_num);
 		_states = initial_states;//set initial pos and theta
 
 
