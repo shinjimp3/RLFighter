@@ -11,8 +11,7 @@ public class StateViewer : MonoBehaviour {
 	UnityEngine.UI.Text hp_green;
 	UnityEngine.UI.Text bullet_num_red;
 	UnityEngine.UI.Text bullet_num_green;
-	UnityEngine.UI.Text step_i_text;
-	UnityEngine.UI.Text episode_i_text;
+	UnityEngine.UI.Text result_text;
 
 	public Transform camera;
 	Vector2 camera_move_dist;
@@ -36,8 +35,7 @@ public class StateViewer : MonoBehaviour {
 		hp_green = GameObject.Find ("HPgreen").GetComponent<UnityEngine.UI.Text>();
 		bullet_num_red = GameObject.Find ("BulletNumred").GetComponent<UnityEngine.UI.Text>();
 		bullet_num_green = GameObject.Find ("BulletNumgreen").GetComponent<UnityEngine.UI.Text>();
-		step_i_text = GameObject.Find ("Step").GetComponent<UnityEngine.UI.Text>();
-		episode_i_text = GameObject.Find ("Episode").GetComponent<UnityEngine.UI.Text>();
+		result_text = GameObject.Find ("Result").GetComponent<UnityEngine.UI.Text>();
 
 		camera_move_dist = new Vector2 (200f, 150f);
 		camera_pos_target = new Vector2(0,0);
@@ -146,6 +144,21 @@ public class StateViewer : MonoBehaviour {
 		camera.position = (new Vector3 (camera_pos_target.x, dist*1.5f, camera_pos_target.y) + 2f*camera.position) / 3f;
 		//Debug.Log (bullets_info.Count);
 
+	}
+
+	public void ShowResult(States states){
+		if (states.HP1 <= 0) {
+			result_text.text = "Player Green Wins!";
+			result_text.color = Color.green;
+		} else if (states.HP2 <= 0) {
+			result_text.text = "Player Red Wins!";
+			result_text.color = Color.red;
+		} else if (states.bullet_num1 == 0 && states.bullet_num2 == 0) {
+			result_text.text = "No Bullets...";
+			result_text.color = Color.blue;
+		} else {
+			result_text.text = "";
+		}
 	}
 
 }

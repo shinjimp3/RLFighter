@@ -45,7 +45,7 @@ public class Player{
 		return actions;
 	}
 
-	public void Reset(){
+	public void EndEpisode(States states){
 		
 	}
 
