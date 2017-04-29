@@ -24,6 +24,7 @@ public class States{
 		return (States)this.MemberwiseClone ();
 	}
 
+	public bool train;
 	public Vector2 pos1;
 	public Vector2 pos2;
 	public float theta1;

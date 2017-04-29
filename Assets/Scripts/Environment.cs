@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Environment{
 	public Environment(){
+		dt = 0.1f;
 		min_speed = 100f * dt;
 		max_speed = 250f * dt;
 		yaw_speed = 135f * dt;
@@ -16,8 +17,10 @@ public class Environment{
 		reload_time_passed_red = 0;
 		reload_time_passed_green = 0;
 		step_i = 0;
+		episode_i = 0;
 
-		_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10, 10);//set initial pos and theta
+		_initial_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10, 10);
+		_states = initial_states;//set initial pos and theta
 
 
 		red_actions = new Actions ();
@@ -25,11 +28,12 @@ public class Environment{
 		bullets_info = new List<Bullet> ();
 
 		step_i_text = GameObject.Find ("Step").GetComponent<UnityEngine.UI.Text>();
+		episode_i_text = GameObject.Find ("Episode").GetComponent<UnityEngine.UI.Text>();
 
+		train_toggle = GameObject.Find ("TrainToggle").GetComponent<UnityEngine.UI.Toggle> ();
 	}
 
-	UnityEngine.UI.Text step_i_text;
-
+	//states, bullets and actions
 	private States _states;
 	public States states{
 		get {return _states.ShallowCopy();}
@@ -38,39 +42,51 @@ public class Environment{
 	public States initial_states{
 		get {return _initial_states.ShallowCopy();}
 	}
+	private List<Bullet> bullets_info; 
+	private Actions red_actions;
+	private Actions green_actions;
 
-
-	private float dt = 0.1f;
-
+	//parameter settings
+	private float dt;
 	private float min_speed;
 	private float max_speed;
 	private float yaw_speed;
 	private float bullet_speed;
 	private float hit_radius;
 	private int bullet_life;
-
 	private int shoot_width;
 	private int shoot_time_passed;
 	private int reload_width;
 	private int reload_time_passed_red;
 	private int reload_time_passed_green;
 
+	//time parameter and viewer
 	private int step_i;
+	private int episode_i;
+	UnityEngine.UI.Text step_i_text;
+	UnityEngine.UI.Text episode_i_text;
 
-	private List<Bullet> bullets_info; 
+	UnityEngine.UI.Toggle train_toggle;
 
-	private Actions red_actions;
-	private Actions green_actions;
 
 	public States Run(Actions red_actions, Actions green_actions){
 		this.red_actions = red_actions;
 		this.green_actions = green_actions;
+		_states.train = train_toggle.isOn;
 		ControlPlayer ();
 		ControlBullets ();
 		step_i++;
 		step_i_text.text = "step:" + step_i;
 		return states;
 
+	}
+
+	public void Reset(){
+		_states = initial_states;
+		bullets_info.Clear ();
+		step_i = 0;
+		episode_i++;
+		episode_i_text.text = "episode:" + episode_i;
 	}
 
 	void ControlPlayer(){

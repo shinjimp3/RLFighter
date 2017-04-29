@@ -8,8 +8,8 @@ public class EpisodeController : MonoBehaviour {
 
 	private bool iterating = false;
 	private bool drawing = false;
+	private bool training = false;
 
-	private int episode = 0;
 	private float time_passed = 0f;
 	private float step_time_passed = 0f;
 	private float step_width = 0.2f;
@@ -46,8 +46,13 @@ public class EpisodeController : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.V)) {
 			drawing = !drawing;
 		}
-
+			
 		if (!drawing || step_time_passed > env.GetDt()) {
+			if (states.HP1 <= 0 || states.HP2 <= 0) {
+				PlayerRedReset ();
+				PlayerGreenReset ();
+				env.Reset ();
+			}
 			red_actions = PlayerRedRunStep (states);
 			green_actions = PlayerGreenRunStep (states);
 			states = env.Run (red_actions, green_actions);
@@ -56,6 +61,7 @@ public class EpisodeController : MonoBehaviour {
 		if(drawing){
 			state_viewer.Draw (states, red_actions, green_actions, env.GetBulletsPosAng (), step_time_passed/env.GetDt());
 		}
+
 		step_time_passed += Time.deltaTime;
 	}
 
@@ -122,5 +128,51 @@ public class EpisodeController : MonoBehaviour {
 		}
 	}
 
+
+	public void PlayerRedReset(){
+		switch (player_type_red) {
+		case 0:
+			random_player_red.Reset ();
+			break;
+		case 1:
+			human_player_red.Reset ();
+			break;
+		case 2:
+			hand_coded_player_red.Reset ();
+			break;
+		case 3:
+			agent_player1_red.Reset ();
+			break;
+		case 4:
+			agent_player2_red.Reset ();
+			break;
+		default :
+			Debug.LogError ("Player red type settings are illegal.", transform);
+			break;
+		}
+	}
+
+	public void PlayerGreenReset(){
+		switch (player_type_green) {
+		case 0:
+			random_player_green.Reset ();
+			break;
+		case 1:
+			human_player_green.Reset ();
+			break;
+		case 2:
+			hand_coded_player_green.Reset ();
+			break;
+		case 3:
+			agent_player1_green.Reset ();
+			break;
+		case 4:
+			agent_player2_green.Reset ();
+			break;
+		default :
+			Debug.LogError ("Player green type settings are illegal.", transform);
+			break;
+		}
+	}
 }
 
