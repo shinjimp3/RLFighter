@@ -6,6 +6,7 @@ public class StateViewer : MonoBehaviour {
 	public Transform player_red;
 	public Transform player_green;
 	public GameObject bullet;
+	public GameObject looser_fire;
 	private List<GameObject> bullets;
 	UnityEngine.UI.Text hp_red;
 	UnityEngine.UI.Text hp_green;
@@ -147,12 +148,19 @@ public class StateViewer : MonoBehaviour {
 	}
 
 	public void ShowResult(States states){
+		GameObject _looser_fire;
 		if (states.HP1 <= 0) {
 			result_text.text = "Player Green Wins!";
 			result_text.color = Color.green;
+			_looser_fire = Instantiate (looser_fire, player_red.position, transform.rotation) as GameObject;
+			_looser_fire.transform.parent = player_red;
+			GameObject.Destroy (_looser_fire, 3f);
 		} else if (states.HP2 <= 0) {
 			result_text.text = "Player Red Wins!";
 			result_text.color = Color.red;
+			_looser_fire = Instantiate (looser_fire, player_green.position, transform.rotation) as GameObject;
+			_looser_fire.transform.parent = player_green;
+			GameObject.Destroy (_looser_fire, 3f);
 		} else if (states.bullet_num1 == 0 && states.bullet_num2 == 0) {
 			result_text.text = "No Bullets...";
 			result_text.color = Color.blue;

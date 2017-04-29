@@ -64,7 +64,9 @@ public class EpisodeController : MonoBehaviour {
 				episode_end = true;
 				PlayerRedEndEpisode (states);
 				PlayerGreenEndEpisode (states);
-				state_viewer.ShowResult (states);
+				if (drawing) {
+					state_viewer.ShowResult (states);
+				}
 			}
 		}
 		if(drawing){

@@ -859,6 +859,8 @@ MonoBehaviour:
   player_red: {fileID: 1037373023}
   player_green: {fileID: 519237916}
   bullet: {fileID: 1029898201347596, guid: 432925331ccdae7489bf4b0ff72f09c4, type: 2}
+  looser_fire: {fileID: 1983535304320672, guid: ba2b70cca4cd2a141a7802bf8ac03bab,
+    type: 2}
   camera: {fileID: 1544505084}
 --- !u!4 &525038692
 Transform:
