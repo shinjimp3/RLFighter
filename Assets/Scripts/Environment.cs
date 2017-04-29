@@ -12,8 +12,9 @@ public class Environment{
 		hit_radius = 20f;
 		bullet_life = 50;
 		shoot_width = 2;
-		shoot_time_passed = 0;
 		reload_width = 4;
+		shoot_time_passed_red = 0;
+		shoot_time_passed_green = 0;
 		reload_time_passed_red = 0;
 		reload_time_passed_green = 0;
 		step_i = 0;
@@ -55,10 +56,14 @@ public class Environment{
 	private float hit_radius;
 	private int bullet_life;
 	private int shoot_width;
-	private int shoot_time_passed;
 	private int reload_width;
+
+	private int shoot_time_passed_red;
+	private int shoot_time_passed_green;
 	private int reload_time_passed_red;
 	private int reload_time_passed_green;
+	private bool pre_red_shooting;
+	private bool pre_green_shooting;
 
 	//time parameter and viewer
 	private int step_i;
@@ -102,46 +107,67 @@ public class Environment{
 		float theta, length;
 		length = hit_radius + 0.1f;
 
-		//Add bullets
-		if (shoot_time_passed == shoot_width) {
-			shoot_time_passed = 0;
-			if (red_actions.shoot && _states.bullet_num1 > 0) {
-				theta = _states.theta1;
-				Bullet bullet_info = new Bullet (
-					                    _states.pos1 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
-					                    theta,
-					                    bullet_life
-				                    );
-				bullets_info.Add (bullet_info);
-				_states.bullet_num1--;
-			}
-			if (green_actions.shoot && _states.bullet_num2 > 0) {
-				theta = _states.theta2;
-				Bullet bullet_info = new Bullet (
-					                    _states.pos2 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
-					                    theta,
-					                    bullet_life
-				                    );
-				bullets_info.Add (bullet_info);
-				_states.bullet_num2--;
-			}
+		if (red_actions.shoot && _states.bullet_num1 > 0) {
+			shoot_time_passed_red++;
 		}
-		shoot_time_passed++;
-
-		//reload bullets
+		if (green_actions.shoot && _states.bullet_num2 > 0) {
+			shoot_time_passed_green++;
+		}
 		if (!red_actions.shoot && _states.bullet_num1 < 10) {
 			reload_time_passed_red++;
-			if (reload_time_passed_red == reload_width) {
-				reload_time_passed_red = 0;
-				_states.bullet_num1++;
-			}
 		}
 		if (!green_actions.shoot && _states.bullet_num2 < 10) {
 			reload_time_passed_green++;
-			if (reload_time_passed_green == reload_width) {
-				reload_time_passed_green = 0;
-				_states.bullet_num2++;
-			}
+		}
+
+		if (red_actions.shoot != pre_red_shooting) {
+			shoot_time_passed_red = 0;
+			reload_time_passed_red = 0;
+		}
+		if (green_actions.shoot != pre_green_shooting) {
+			shoot_time_passed_green = 0;
+			reload_time_passed_green = 0;
+		}
+
+
+		pre_red_shooting = red_actions.shoot;
+		pre_green_shooting = green_actions.shoot;
+
+
+		//Add bullets
+		//if (red_actions.shoot && _states.bullet_num1 > 0) {
+		if(shoot_time_passed_red >= shoot_width){
+			theta = _states.theta1;
+			Bullet bullet_info = new Bullet (
+				                    _states.pos1 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
+				                    theta,
+				                    bullet_life
+			                    );
+			bullets_info.Add (bullet_info);
+			_states.bullet_num1--;
+			shoot_time_passed_red = 0;
+		}
+		//if (green_actions.shoot && _states.bullet_num2 > 0) {
+		if(shoot_time_passed_green >= shoot_width){
+			theta = _states.theta2;
+			Bullet bullet_info = new Bullet (
+				                    _states.pos2 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
+				                    theta,
+				                    bullet_life
+			                    );
+			bullets_info.Add (bullet_info);
+			_states.bullet_num2--;
+			shoot_time_passed_green = 0;
+		}
+
+		//reload bullets
+		if (reload_time_passed_red >= reload_width) {
+			_states.bullet_num1++;
+			reload_time_passed_red = 0;
+		}
+		if (reload_time_passed_green >= reload_width) {
+			_states.bullet_num2++;
+			reload_time_passed_green = 0;
 		}
 
 
