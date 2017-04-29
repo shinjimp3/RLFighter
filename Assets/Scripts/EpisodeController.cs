@@ -48,7 +48,8 @@ public class EpisodeController : MonoBehaviour {
 		}
 			
 		if (!drawing || step_time_passed > env.GetDt()) {
-			if (states.HP1 <= 0 || states.HP2 <= 0) {
+			if (states.HP1 <= 0 || states.HP2 <= 0 || 
+				(!states.endless && states.bullet_num1 <= 0 && states.bullet_num2 <= 0)) {
 				PlayerRedReset ();
 				PlayerGreenReset ();
 				env.Reset ();

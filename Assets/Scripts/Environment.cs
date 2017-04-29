@@ -20,7 +20,15 @@ public class Environment{
 		step_i = 0;
 		episode_i = 0;
 
-		_initial_states = new States (new Vector2(0f,0f), new Vector2(500f, 10f), 0f, 180f, 10, 10);
+		train_toggle = GameObject.Find ("TrainToggle").GetComponent<UnityEngine.UI.Toggle> ();
+		endless_toggle = GameObject.Find ("EndlessToggle").GetComponent<UnityEngine.UI.Toggle> ();
+
+		if (endless_toggle.isOn)
+			initial_bullet_num = 10;
+		else
+			initial_bullet_num = 50;
+		
+		_initial_states = new States (new Vector2(0f,50f), new Vector2(500f, 150f), 0f, 180f, 10, initial_bullet_num);
 		_states = initial_states;//set initial pos and theta
 
 
@@ -28,8 +36,6 @@ public class Environment{
 		green_actions = new Actions ();
 		bullets_info = new List<Bullet> ();
 
-		train_toggle = GameObject.Find ("TrainToggle").GetComponent<UnityEngine.UI.Toggle> ();
-		endless_toggle = GameObject.Find ("EndlessToggle").GetComponent<UnityEngine.UI.Toggle> ();
 		_states.train = train_toggle.isOn;
 		_states.endless = endless_toggle.isOn;
 	}
@@ -57,6 +63,7 @@ public class Environment{
 	private int bullet_life;
 	private int shoot_width;
 	private int reload_width;
+	private int initial_bullet_num;
 
 	private int shoot_time_passed_red;
 	private int shoot_time_passed_green;
@@ -113,11 +120,13 @@ public class Environment{
 		if (green_actions.shoot && _states.bullet_num2 > 0) {
 			shoot_time_passed_green++;
 		}
-		if (!red_actions.shoot && _states.bullet_num1 < 10) {
-			reload_time_passed_red++;
-		}
-		if (!green_actions.shoot && _states.bullet_num2 < 10) {
-			reload_time_passed_green++;
+		if (_states.endless) {
+			if (!red_actions.shoot && _states.bullet_num1 < 10) {
+				reload_time_passed_red++;
+			}
+			if (!green_actions.shoot && _states.bullet_num2 < 10) {
+				reload_time_passed_green++;
+			}
 		}
 
 		if (red_actions.shoot != pre_red_shooting) {
