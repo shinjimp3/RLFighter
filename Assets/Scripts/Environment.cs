@@ -37,7 +37,6 @@ public class Environment{
 
 		red_actions = new Actions ();
 		green_actions = new Actions ();
-		bullets_info = new List<Bullet> ();
 
 		_states.train = train_toggle.isOn;
 		_states.endless = endless_toggle.isOn;
@@ -52,7 +51,6 @@ public class Environment{
 	public States initial_states{
 		get {return _initial_states.ShallowCopy();}
 	}
-	private List<Bullet> bullets_info; 
 	private Actions red_actions;
 	private Actions green_actions;
 
@@ -106,7 +104,7 @@ public class Environment{
 		_states = initial_states;
 		_states.step_i = step_i;
 		_states.episode_i = episode_i;
-		bullets_info.Clear ();
+		_states.bullets_info.Clear ();
 	}
 
 	void ControlPlayer(){
@@ -163,7 +161,7 @@ public class Environment{
 				                    theta,
 				                    bullet_life
 			                    );
-			bullets_info.Add (bullet_info);
+			_states.bullets_info.Add (bullet_info);
 			_states.bullet_num1--;
 			shoot_time_passed_red = 0;
 		}
@@ -175,7 +173,7 @@ public class Environment{
 				                    theta,
 				                    bullet_life
 			                    );
-			bullets_info.Add (bullet_info);
+			_states.bullets_info.Add (bullet_info);
 			_states.bullet_num2--;
 			shoot_time_passed_green = 0;
 		}
@@ -194,36 +192,36 @@ public class Environment{
 		//  judge hit -> reduce bullet's life -> move bullets ->  remove bullets ->  -> 
 		_states.isDamaged1 = false;
 		_states.isDamaged2 = false;
-		for(int i = 0; i < bullets_info.Count; i++){
+		for(int i = 0; i < _states.bullets_info.Count; i++){
 			bool removed = false;
-			if (Vector2.Dot (bullets_info [i].pos - _states.pos1, bullets_info [i].pos - _states.pos1) < hit_radius * hit_radius) {
+			if (Vector2.Dot (_states.bullets_info [i].pos - _states.pos1, _states.bullets_info [i].pos - _states.pos1) < hit_radius * hit_radius) {
 				_states.isDamaged1 = true;
 				_states.HP1--;
 				removed = true;
 			}
-			if (Vector2.Dot (bullets_info [i].pos - _states.pos2, bullets_info [i].pos - _states.pos2) < hit_radius * hit_radius) {
+			if (Vector2.Dot (_states.bullets_info [i].pos - _states.pos2, _states.bullets_info [i].pos - _states.pos2) < hit_radius * hit_radius) {
 				_states.isDamaged2 = true;
 				_states.HP2--;
 				removed = true;
 			}
 
-			bullets_info [i].life--;
-			if (bullets_info [i].life <= 0) {
+			_states.bullets_info [i].life--;
+			if (_states.bullets_info [i].life <= 0) {
 				removed = true;
 			}
 
-			theta = bullets_info[i].theta;
-			bullets_info [i].pos += bullet_speed * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad));
+			theta = _states.bullets_info[i].theta;
+			_states.bullets_info [i].pos += bullet_speed * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad));
 
 			if (removed) {
-				bullets_info.RemoveAt (i);
+				_states.bullets_info.RemoveAt (i);
 				i--;
 			}
 		}
 	}
 
 	public List<Bullet> GetBulletsPosAng(){
-		return bullets_info;
+		return states.bullets_info;
 	}
 
 	public float GetDt(){

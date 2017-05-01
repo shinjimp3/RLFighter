@@ -18,6 +18,7 @@ public class States{
 		this.HP2 = HP;
 		this.bullet_num1 = bullet_num;
 		this.bullet_num2 = bullet_num;
+		bullets_info = new List<Bullet> ();
 	}
 
 	public States ShallowCopy(){
@@ -41,6 +42,7 @@ public class States{
 	public bool isShooting2;
 	public bool isDamaged1;
 	public bool isDamaged2;
+	public List<Bullet> bullets_info;
 	public Vector2 rel_pos12{
 		get { return RelatedPos (pos1, pos2, theta2); }
 	}
