@@ -41,7 +41,9 @@ public class States{
 	public bool isShooting1;
 	public bool isShooting2;
 	public bool isDamaged1;
+	public int isDameged1Before;
 	public bool isDamaged2;
+	public int isDameged2Before;
 	public List<Bullet> bullets_info;
 	public Vector2 rel_pos12{
 		get { return RelatedPos (pos1, pos2, theta2); }

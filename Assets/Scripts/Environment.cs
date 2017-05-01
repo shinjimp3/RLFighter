@@ -159,7 +159,8 @@ public class Environment{
 			Bullet bullet_info = new Bullet (
 				                    _states.pos1 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
 				                    theta,
-				                    bullet_life
+				                    bullet_life,
+									true
 			                    );
 			_states.bullets_info.Add (bullet_info);
 			_states.bullet_num1--;
@@ -171,7 +172,8 @@ public class Environment{
 			Bullet bullet_info = new Bullet (
 				                    _states.pos2 + length * new Vector2 (Mathf.Cos (theta * Mathf.Deg2Rad), Mathf.Sin (theta * Mathf.Deg2Rad)),
 				                    theta,
-				                    bullet_life
+				                    bullet_life,
+									false
 			                    );
 			_states.bullets_info.Add (bullet_info);
 			_states.bullet_num2--;
@@ -196,11 +198,13 @@ public class Environment{
 			bool removed = false;
 			if (Vector2.Dot (_states.bullets_info [i].pos - _states.pos1, _states.bullets_info [i].pos - _states.pos1) < hit_radius * hit_radius) {
 				_states.isDamaged1 = true;
+				_states.isDameged1Before = bullet_life - _states.bullets_info [i].life;
 				_states.HP1--;
 				removed = true;
 			}
 			if (Vector2.Dot (_states.bullets_info [i].pos - _states.pos2, _states.bullets_info [i].pos - _states.pos2) < hit_radius * hit_radius) {
 				_states.isDamaged2 = true;
+				_states.isDameged2Before = bullet_life - _states.bullets_info [i].life;
 				_states.HP2--;
 				removed = true;
 			}
