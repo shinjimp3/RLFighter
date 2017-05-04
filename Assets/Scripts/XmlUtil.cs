@@ -5,11 +5,10 @@ using System.Xml.Serialization;
 public class XmlUtil {
 	// シリアライズ
 	public static T Seialize<T>(string filename, T data) {
-		using ( var stream = new FileStream(filename, FileMode.Create) ) {
-			var serializer = new XmlSerializer(typeof(T));
-			serializer.Serialize(stream, data);
-		}
-
+		var stream = new FileStream (filename, FileMode.Create);
+		var serializer = new XmlSerializer(typeof(T));
+		serializer.Serialize(stream, data);
+		
 		return data;
 	}
 
