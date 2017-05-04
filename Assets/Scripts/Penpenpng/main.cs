@@ -54,8 +54,7 @@ namespace Assets.Scripts.Penpenpng
 			{
 				Store(PrevState, PrevAction, nowState);
 				Learn();
-				Learn(PrevState, PrevAction, nowState);
-				Learn(PrevState.Reverse(), PrevAction.Reverse(), nowState.Reverse());
+
 				decision = Policy(nowState);
 			}
 			else

@@ -14,7 +14,7 @@ namespace Assets.Scripts.Penpenpng
 
 		protected void Debug(string message)
 		{
-			GameObject.Find("Text").GetComponent<Text>().text = message;
+			GameObject.Find("FreeText2").GetComponent<Text>().text = message;
 		}
 	}
 }
