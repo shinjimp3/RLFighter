@@ -109,7 +109,6 @@ public class StateViewer : MonoBehaviour {
 
 		//if (Mathf.Abs (theta0 - theta1) < 0.001f) {
 			p = (1f - t) * x0 + t * x1;
-		Debug.Log (x0 + "," + x1);
 		//}else{
 		//	Vector2 q = x0 + (Vector2.Dot(x1-x0,r1)) / (Mathf.Sin (theta0 - theta1)) * r0;
 		//	p = (1f - t) * (1f - t) * x0 + 2f * t * (1f - t) * q + t * t * x1;

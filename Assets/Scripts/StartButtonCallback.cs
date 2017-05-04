@@ -7,6 +7,12 @@ public class StartButtonCallback : MonoBehaviour {
 	public UnityEngine.UI.Dropdown dp2;
 	public EpisodeController episode_controller;
 
+
+	void Start(){
+		episode_controller = GameObject.Find ("EpisodeController").GetComponent<EpisodeController> ();
+
+	}
+
 	public void OnButtonReleased(int result){
 		int player1_num = dp1.value;
 		int player2_num = dp2.value;

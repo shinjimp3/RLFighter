@@ -56,14 +56,18 @@
      <Compile Include="Assets\Scripts\Fighter.cs" />
      <Compile Include="Assets\Scripts\HandCodedPlayer.cs" />
      <Compile Include="Assets\Scripts\HumanPlayer.cs" />
+     <Compile Include="Assets\Scripts\LoadButtonCallBack.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerPrefsUtils.cs" />
      <Compile Include="Assets\Scripts\PosAngle.cs" />
      <Compile Include="Assets\Scripts\RandomPlayer.cs" />
+     <Compile Include="Assets\Scripts\SaveButtonCallBack.cs" />
      <Compile Include="Assets\Scripts\StartButtonCallback.cs" />
      <Compile Include="Assets\Scripts\StateViewer.cs" />
      <Compile Include="Assets\Scripts\States.cs" />
      <Compile Include="Assets\Scripts\TextDebugger.cs" />
      <Compile Include="Assets\Scripts\XmlUtil.cs" />
+     <None Include="Assets\Player1Qtable.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

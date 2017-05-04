@@ -22,6 +22,8 @@ public class Environment{
 
 		step_i_text = GameObject.Find ("Step").GetComponent<UnityEngine.UI.Text>();
 		episode_i_text = GameObject.Find ("Episode").GetComponent<UnityEngine.UI.Text>();
+		score_red_text =  GameObject.Find ("ScoreRed").GetComponent<UnityEngine.UI.Text>();
+		score_green_text =  GameObject.Find ("ScoreGreen").GetComponent<UnityEngine.UI.Text>();
 
 		train_toggle = GameObject.Find ("TrainToggle").GetComponent<UnityEngine.UI.Toggle> ();
 		endless_toggle = GameObject.Find ("EndlessToggle").GetComponent<UnityEngine.UI.Toggle> ();
@@ -79,6 +81,9 @@ public class Environment{
 
 	UnityEngine.UI.Text step_i_text;
 	UnityEngine.UI.Text episode_i_text;
+	UnityEngine.UI.Text score_red_text;
+	UnityEngine.UI.Text score_green_text;
+
 
 	UnityEngine.UI.Toggle train_toggle;
 	UnityEngine.UI.Toggle endless_toggle;
@@ -89,11 +94,11 @@ public class Environment{
 		_states.train = train_toggle.isOn;
 		_states.endless = endless_toggle.isOn;
 		_states.step_i = step_i;
-		step_i++;
 		step_i_text.text = "step:" + step_i;
 		episode_i_text.text = "episode:" + episode_i;
 		ControlPlayer ();
 		ControlBullets ();
+		step_i++;
 		return states;
 
 	}
