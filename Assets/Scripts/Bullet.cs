@@ -8,7 +8,7 @@ public class Bullet{
 		this.pos = pos;
 		this.theta = theta;
 		this.life = life;
-		this.isRed = 
+		this.isRed = isRed;
 	}
 	public Vector2 pos;
 	public float theta;
