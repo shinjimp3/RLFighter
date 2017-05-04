@@ -51,13 +51,16 @@ public Actions RunStep(States states){
     //ここで内部状態を定義するメソッドを挟んでも良い。（位置を離散化するとか）
     next_obs_states = states;
     
-    //報酬関数 R(s,a,s')
-    //報酬は環境ではなくエージェントに設定してもらいます。
-    reward = CalcReward (obs_states, actions, next_obs_states);
+    if (episode_started) { //エピソード開始時はs,s'の2つが定義できないため，スルー
+	    //報酬関数 R(s,a,s')
+	    //報酬は環境ではなくエージェントに設定してもらいます。
+	    reward = CalcReward (obs_states, actions, next_obs_states);
+
+	    //QtableとかValueFunctionとか更新
+	    Learn (obs_states, actions, next_obs_states, reward);
+    }
+    episode_started = true;
     
-    //QtableとかValueFunctionとか更新
-    Learn (obs_states, actions, next_obs_states, reward);
-		
     //方策 a=pi(s)
     actions = Policy (next_obs_states);
 		
@@ -67,14 +70,36 @@ public Actions RunStep(States states){
     return actions;
 }
 ```
-エピソード終了時の処理はEndEpisodeメソッドに書いてください。EndEpisodeメソッドはStatesクラスを引数に取ります。<br>
-「どちらかが死んだ後，環境がリセットされる前にその状態を価値関数に反映させる」といった使い方を想定しています。<br>
-Q-learningの
+エピソード終了時の処理はEndEpisodeメソッドに書いてください。<br>
+EndEpisodeメソッドは状態（Statesクラス）を引数に取ります。<br>
+「どちらかが死んだ後，環境がリセットされる前に勝ち負けを価値関数に反映させる」といった使い方を想定しています。<br>
+EndEpisodeメソッドには，Q-learningの
 <img src="https://latex.codecogs.com/gif.latex?r&space;&plus;&space;\gamma&space;\max&space;Q(s',a')" />
 を
 <img src="https://latex.codecogs.com/gif.latex?r" />
 に変える，
-初期化するときの状態遷移を学習しないようにepisode_startedをfalseにするなどの処理を行うと良いでしょう。
+初期化するときの状態遷移を学習しないようにepisode_startedをfalseにするなどの処理を，以下のように書き込むと良いでしょう。
+```csharp
+public void EndEpisode(States states){
+	//状態を離散値に
+	int state_i = State2Index (states);
+	float alpha = 0.1f;
+	float gamma = 0.9f;
+	float reward = 0f;
+	//勝ったら報酬1
+	if ((isRed && states.HP2 <= 0 )|| (!isRed && states.HP1 <= 0))
+		reward = 1f;
+	//負けたら報酬-1
+	if ((!isRed && states.HP2 <= 0)|| (isRed && states.HP1 <= 0))
+		reward = -1f;
+	//即時報酬だけで価値関数を更新(エピソードが終了するため将来の報酬が0だから)
+	Qtable [state_i, action_index] += alpha * (reward - Qtable [state_i, action_index]);
+	//初期化するときの状態遷移(s -> s0)を使って学習させない。
+	episode_started = false;
+}
+
+```
+
 ### Actions クラス
 以下のようなフィールドを持っています。  
 #### *float* yaw  
