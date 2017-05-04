@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Player{
 	
+
 	//private float step_width = 2f * 0.1f;
 	internal int step_width = 2;	//times of env update rate.
 	//private float passed_time = 0f;
@@ -65,4 +67,11 @@ public class Player{
 		return Random.value;
 	}
 
+	public void Save(){
+		
+	}
+
+	public void Load(){
+
+	}
 }
