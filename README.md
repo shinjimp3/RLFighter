@@ -6,26 +6,25 @@
 2機の戦闘機は2次元平面上で動きます。  
 エージェントは出力として，速度，旋回速度，射撃の有無を決められます。  
 戦闘機は円形の当たり判定を持ちます。  
-弾が当たると当たった機体のHPが減りますが，現在（2017/04/26）HPが0になったときの処理はありません。  
-敵のHPを自分より少なくすることを考えてエージェントを構築してみて下さい。
 
 ## ゲームの操作方法
-左上の2つのドロップダウンで，各機体（赤，緑）にPlayerを割り当てます。  
-Playerの内，Agent Player1, Agent Player2は後述するAgentPlayer1.cs, AgentPlayer2.csによって動作します。
-Random Playerはランダムに，Hand Coded Playerはハンドコーディングで動作します。
-Human PlayerはWASDキーで左右旋回と速度の設定ができます。Fキーで弾を撃ちます。
-Iteration Startボタンでゲームが始まります。
-Vキーを押すことで描画の有無を切り替えます。　　
-描画をするとリアルタイムにゲームが動きますが，描画を切ると高速でstepが進みます。
+左上の2つのトグルで，訓練モードかどうか，エンドレスルールかどうかを決めます。<br>
+左上の2つのドロップダウンで，各機体（赤，緑）にPlayerを割り当てます。<br> 
+Playerの内，Agent Player1, Agent Player2は後述するAgentPlayer1.cs, AgentPlayer2.csによって動作します。<br>
+Random Playerはランダムに，Hand Coded Playerはハンドコーディングで動作します。<br>
+Human PlayerはWASDキーで左右旋回と速度の設定ができます。Fキーで弾を撃ちます。<br>
+Iteration Startボタンでゲームが始まります。<br>
+Vキーを押すことで描画の有無を切り替えます。<br>
+描画をするとリアルタイムにゲームが動きますが，描画を切ると高速でstepが進みます。<br>
 
 ## 各スクリプト・クラスについて
 ### AgentPlayer1.cs, AgentPlayer2.cs  
-このクラスを編集することでエージェントを構築して下さい。  
-環境とのインタラクションはRunStepメソッドを用いて行います。
-RunStepメソッドは状態（Statesクラス）を引数に取り，行動（Actionsクラス）を返します。
-ゲーム内時間0.1s毎に呼びだされ，その後環境が状態遷移します。
-ランダムな行動を取らせるならRunStepメソッドを以下のようにしましょう。
-```
+このクラスを編集することでエージェントを構築して下さい。<br>
+環境とのインタラクションはRunStepメソッドを用いて行います。<br>
+RunStepメソッドは状態（Statesクラス）を引数に取り，行動（Actionsクラス）を返します。<br>
+ゲーム内時間0.1s毎に呼びだされ，その後環境が状態遷移します。<br>
+ランダムな行動を取らせるならRunStepメソッドを以下のようにしましょう。<br>
+```csharp
 public Actions RunStep(States states){
     //Playerクラスから継承した actions に適当な行動を設定する。
     actions.yaw = Random.value;
@@ -37,7 +36,7 @@ public Actions RunStep(States states){
 }
 ```
 もう少しマシな強化学習エージェントにしたければ以下のようにしましょう。
-```
+```csharp
 public Actions RunStep(States states){
     //制御周期の設定
     //環境はゲーム内時間0.1s毎とかなり細かめに状態を遷移させますが，エージェントの制御周期をこれに合わせる必要はありません。
@@ -68,7 +67,14 @@ public Actions RunStep(States states){
     return actions;
 }
 ```
-
+エピソード終了時の処理はEndEpisodeメソッドに書いてください。EndEpisodeメソッドはStatesクラスを引数に取ります。<br>
+「どちらかが死んだ後，環境がリセットされる前にその状態を価値関数に反映させる」といった使い方を想定しています。<br>
+Q-learningの
+<img src="https://latex.codecogs.com/gif.latex?r&space;&plus;&space;\gamma&space;\max&space;Q(s',a')" />
+を
+<img src="https://latex.codecogs.com/gif.latex?r" />
+に変える，
+初期化するときの状態遷移を学習しないようにepisode_startedをfalseにするなどの処理を行うと良いでしょう。
 ### Actions クラス
 以下のようなフィールドを持っています。  
 #### *float* yaw  
@@ -79,25 +85,51 @@ public Actions RunStep(States states){
 0で最低速度，1で最高速度になります。
 #### *bool* shoot
 弾を撃つかどうか指定できます。  
-弾数の制限がまだ無いため，常時trueにして無限に撃っても問題ありません。
 
 ### States クラス
 以下のようなフィールドを持っています。  
-#### *Vector2* pos1, pos2  
-それぞれ各機体（赤, 緑）のワールド座標。  
+#### *bool* train  
+訓練モードかどうか。  
+ゲームの挙動には関わらない値ですが，trueなら探索や価値関数の更新をするように，
+falseなら価値観数の更新を止めgreedyな行動選択をするようにしてください。  
+「trainをtrueにしてしばらく学習をさせてから，trainをfalseに切り替えて学習の結果を見る」  
+といったような使い方を想定しています。
+#### *bool* endless  
+エンドレスルールが適用されているかどうか。  
+基本は適用されている前提で行きましょう。
+#### *int* step_i  
+現在のエピソードで何ステップ経過したか。  
+#### *int* episode_i  
+何エピソード経過したか。  
+学習率や温度係数の更新に用いると良いでしょう。
+#### *Vector2* pos1, pos2  
+それぞれ各機体（赤, 緑）のワールド座標。  
 画面を見て 右がx，上がy。
 #### *float* theta1, theta2  
 それぞれ各機体（赤, 緑）のワールド角度（向いている方向）。  
 画面を見て 右を0度として 左回りに360度まで定義されている。
 #### *int* HP1, HP2
 それぞれ各機体（赤, 緑）の体力。  
-現在（2017/04/25）HPが0になっても機体は死なない。
-#### *int* bullet_num1, bullet_num2  
-未使用。  
+#### *int* bullet_num1, bullet_num2  
+それぞれ各機体（赤, 緑）の残り弾数。
 #### *bool* isShooting1, isShooting2  
 それぞれ各機体（赤, 緑）が弾を撃っているかどうか。  
 #### *bool* isDamaged1, isDamaged2  
 それぞれ各機体（赤, 緑）に弾が当たっているかどうか。  
+#### *bool* isDamaged1Before, isDamaged2Before  
+それぞれ各機体（赤, 緑）に弾が当たっていた場合，それが何step前に発射された弾によるものか。  
+弾が当たっていない場合，この値は更新されない。
+#### *List\<Bullet\>* bullets_info;
+発射された弾丸の情報が格納されているリスト。  
+Bulletクラスには以下のフィールドが存在
+* *Vector2* pos  
+ 弾丸のワールド座標
+* *float* theta  
+ 弾丸の飛んでいくワールド角度
+* *int* life  
+ 弾丸が自動消滅するまでのステップ数
+* *bool* isRed  
+ 機体赤から発射されたかどうか
 #### *Vector2* rel_pos12, rel_pos21  
 rel_pos12は機体2（緑）から見た機体1（赤）のワールド座標の相対値。  
 rel_pos21はその逆。観測側の機体の角度は考慮していない。  
