@@ -75,7 +75,7 @@ namespace Assets.Scripts.Penpenpng
 				foreach (var valiant in valiants)
 				{
 					int next_i = Buffer.IndexOf(valiant) + 1;
-					if (next_i > Buffer.Count()) continue;
+					if (next_i >= Buffer.Count()) continue;
 					var valiantNext = Buffer[next_i];
 
 					var s1 = valiant.State;
