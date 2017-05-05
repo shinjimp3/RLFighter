@@ -7,9 +7,9 @@
 エージェントは出力として，速度，旋回速度，射撃の有無を決められます。  
 戦闘機は円形の当たり判定を持ちます。  
 
-以下のAssetを各自でダウンロードし，Assetフォルダ直下に置いてください。
-戦闘機3Dモデル：https://www.assetstore.unity3d.com/jp/#!/content/52212  
-背景：https://www.assetstore.unity3d.com/en/#!/content/25582  
+以下のAssetを各自でダウンロードし，Assetフォルダ直下に置いてください。<br>
+戦闘機3Dモデル：https://www.assetstore.unity3d.com/jp/#!/content/52212<br>
+背景：https://www.assetstore.unity3d.com/en/#!/content/25582<br>
 
 ## ゲームの操作方法
 左上の2つのトグルで，訓練モードかどうか，エンドレスルールかどうかを決めます。<br>
