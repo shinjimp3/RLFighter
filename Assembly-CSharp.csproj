@@ -57,6 +57,13 @@
      <Compile Include="Assets\Scripts\HandCodedPlayer.cs" />
      <Compile Include="Assets\Scripts\HumanPlayer.cs" />
      <Compile Include="Assets\Scripts\LoadButtonCallBack.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\BufferingQTable.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\BufferingQTableAlt.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\DoubleRiding.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\SimpleQTable.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\StateActionSpace1.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\StateActionSpace2.cs" />
+     <Compile Include="Assets\Scripts\Penpenpng\Strategy.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsUtils.cs" />
      <Compile Include="Assets\Scripts\PosAngle.cs" />
