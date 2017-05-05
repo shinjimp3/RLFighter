@@ -100,7 +100,7 @@ namespace Assets.Scripts.Penpenpng
 			float reward = 0;
 			reward += -(s2.RawAbsPhi / 180f * 10f);
 			reward += s2.RawAbsTheta / 180f * 10f;
-			reward += s2.RawDistance > 1000 ? -20 : 0;
+			reward += s2.RawDistance > 800 ? -20 : 0;
 			return reward;
 		}
 

@@ -27,7 +27,7 @@ namespace Assets.Scripts.Penpenpng
 		//赤1と緑2の距離を表現したもの
 		public int RawDistance { get; private set; }
 		public int Distance { get; private set; }
-		const int DistanceSize = 9;
+		const int DistanceSize = 11;
 
 		public string DebugStr()
 		{
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Penpenpng
 		//区間の区切り点
 		static readonly int[] ThetaKnots = new int[AbsThetaSize - 1] { 10, 20, 30, 40, 60, 90, 120 };
 		static readonly int[] PhiKnots = new int[AbsPhiSize - 1] { 10, 20, 30, 40, 60, 90, 120 };
-		static readonly int[] DistanceKnots = new int[DistanceSize - 1] { 60, 120, 180, 240, 300, 400, 500, 600 };
+		static readonly int[] DistanceKnots = new int[DistanceSize - 1] { 60, 120, 180, 240, 300, 400, 500, 600, 800, 1000 };
 
 		public override State FromRawState(States states)
 		{
