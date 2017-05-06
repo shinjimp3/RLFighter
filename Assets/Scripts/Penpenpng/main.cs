@@ -9,7 +9,7 @@ namespace Assets.Scripts.Penpenpng
 	{
 		List<Step<PolarCoord, HandleAction>> History = new List<Step<PolarCoord, HandleAction>>();
 		Dictionary<PolarCoord, Dictionary<HandleAction, float>> QTable;
-		const float HitReward = 20;
+		const float HitReward = 50;
 		static readonly State StateFactory = new PolarCoord();
 		static readonly Action ActionFactory = new HandleAction();
 
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Penpenpng
 		/// </summary>
 		public GreenHybrid()
 		{
-			InitializeQTable((s, a) => 20);
+			InitializeQTable((s, a) => 50);
 		}
 
 		/// <summary>
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Penpenpng
 			PrevState = nowState;
 			PrevAction = decision;
 
-			bool shoot = states.bullet_num2 != 0 && nowState.RawAbsPhi < 60;
+			bool shoot = states.bullet_num2 != 0 && nowState.RawAbsPhi < 40;
 			return decision.ToRawAction(shoot);
 		}
 
@@ -97,7 +97,11 @@ namespace Assets.Scripts.Penpenpng
 
 		float Reward(PolarCoord s1, HandleAction a, PolarCoord s2)
 		{
-			return - s2.AbsPhi + s2.AbsTheta + s2.Distance * (s2.RawAbsTheta < 90 ? -1 : 1);
+			float reward = 0;
+			reward += -(s2.RawAbsPhi / 180f * 10f);
+			reward += s2.RawAbsTheta / 180f * 10f;
+			reward += s2.RawDistance > 800 ? -20 : 0;
+			return reward;
 		}
 
 		void HitCheck(PolarCoord nowState)
@@ -107,7 +111,7 @@ namespace Assets.Scripts.Penpenpng
 			//機体にダメージを与えた**可能性がある**行動に報酬を与える
 			if (nowRaw.isDamaged1)
 			{
-				var valiants = History.Where(p => p.Action.ToRawAction().shoot).Reverse().Take(5);
+				var valiants = History.Where(p => p.Prev.RawState.isShooting2).Reverse().Take(5);
 				foreach (var valiant in valiants)
 				{
 					var s1 = valiant.Prev;
@@ -116,7 +120,23 @@ namespace Assets.Scripts.Penpenpng
 					Learn(s1, a, s2, HitReward);
 					Learn(s1.Reverse(), a.Reverse(), s2.Reverse(), HitReward);
 				}
+			}
 
+			if (nowRaw.isDamaged2)
+			{
+				var valiants = History.Where(p => p.Prev.RawState.isShooting1).Reverse().Take(5);
+				foreach (var valiant in valiants)
+				{
+					var s1 = valiant.Prev;
+					var a = valiant.Action;
+					var s2 = valiant.Next;
+					Learn(s1, a, s2, -HitReward);
+					Learn(s1.Reverse(), a.Reverse(), s2.Reverse(), -HitReward);
+				}
+			}
+
+			if (nowRaw.isDamaged1|| nowRaw.isDamaged2)
+			{
 				//experience replayもどき
 				foreach (var step in History.AsEnumerable().Reverse())
 				{
