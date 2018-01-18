@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.Windows;
 
 //using MathNet.Numerics.LinearAlgebra.Double;
 
 public class AgentPlayer1 : Player {
-	private float[,] Qtable = new float[450,6];
+	private float[,] Qtable = new float[450,12];
 	private string serializeDataPath;
 	UnityEngine.UI.Text debug_text;
 	private float reward_sum = 0f;
@@ -28,7 +30,7 @@ public class AgentPlayer1 : Player {
 		serializeDataPath = Application.dataPath + "Player1Qtable.xml";
 		for (int i = 0; i < Qtable.GetLength (0); i++) {
 			for (int j = 0; j < Qtable.GetLength (1); j++) {
-				Qtable [i, j] = 0.1f;
+				Qtable [i, j] = 1f;
 				//if(i - i%3 - (i-i%3)/3 - (i - i%3 - (i-i%3)/3)/6 )
 //					if (i % 5 == 1)
 //						Qtable [i, j] += 5f;
@@ -101,7 +103,7 @@ public class AgentPlayer1 : Player {
 		action_index = Policy (next_obs_states);
 		actions = Index2Action (action_index);
 		obs_states = next_obs_states;
-		actions.shoot = (isRed && Mathf.Abs (states.target_theta21 - 90f) < 20f) || (!isRed && Mathf.Abs (states.target_theta12 - 90f) < 20f);
+		//actions.shoot = (isRed && Mathf.Abs (states.target_theta21 - 90f) < 20f) || (!isRed && Mathf.Abs (states.target_theta12 - 90f) < 20f);
 		return actions;
 	}
 
@@ -161,10 +163,12 @@ public class AgentPlayer1 : Player {
 			action_i = (int)((Random.value) * action_num);
 		} else {
 			float[] qvector = new float[action_num];
-			//debug_text.text = "";
+			debug_text.text = "";
 			for (int i = 0; i < qvector.Length; i++) {
 				qvector [i] = Qtable [state_i, i];
-				//debug_text.text += qvector[i].ToString("f4") + ", ";
+				debug_text.text += qvector[i].ToString("f4") + ", ";
+				if( i%4 == 3)
+					debug_text.text += "\n";
 			}
 			action_i = ArgMax (qvector);
 		}
@@ -194,14 +198,14 @@ public class AgentPlayer1 : Player {
 		float shoot;
 		float speed;
 		float yaw;
-		//shoot = (float)index % 2f;
-		//speed = (((float)index - shoot) / 2f) % 2f;
-		//yaw = ((float)index - shoot - 2f * speed) / 4f;
-		speed = index%2f;
-		yaw = (index - speed) / 2f;
-		//ret_actions.shoot = shoot > 0.5f;
+		shoot = (float)index % 2f;
+		speed = (((float)index - shoot) / 2f) % 2f;
+		yaw = ((float)index - shoot - 2f * speed) / 4f;
+		//speed = index%2f;
+		//yaw = (index - speed) / 2f;
+		ret_actions.shoot = shoot > 0.5f;
 		ret_actions.speed = speed;
-		ret_actions.yaw = yaw;
+		ret_actions.yaw = yaw * 0.5f;
 		return ret_actions;
 	}
 

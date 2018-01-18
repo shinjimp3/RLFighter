@@ -10,7 +10,7 @@ public class HandCodedPlayer : Player {
 	}
 
 	private float target_theta = 0f;
-
+	private bool isReloading = false;
 
 
 	public Actions RunStep(States states){
@@ -43,8 +43,11 @@ public class HandCodedPlayer : Player {
 				actions.speed = 1f;
 		}
 
-		actions.shoot = (Mathf.Abs (target_theta - 90f) < 20f);
-
+		actions.shoot = (Mathf.Abs (target_theta - 90f) < 20f)&&!isReloading;
+		if (states.bullet_num1 == 0 && isRed || states.bullet_num2 == 0 && !isRed)
+			isReloading = true;
+		if (states.bullet_num1 == 10 && isRed || states.bullet_num2 == 10 && !isRed)
+			isReloading = false;
 
 		return actions;
 	}
