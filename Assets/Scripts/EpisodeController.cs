@@ -22,6 +22,11 @@ public class EpisodeController : MonoBehaviour {
 	private int player_type_red;
 	private int player_type_green;
 
+	// Generate all players (agents) here and in public void SetEnvironmentAndPlayer(int player_type_red, int player_type_green)
+	// but only selected players are controlled in private Actions PlayerRedRunStep(States states),
+	//                                             private Actions PlayerGreenRunStep(States states),
+	//                                             private void PlayerRedEndEpisode(States states),
+	//                                             private void PlayerGreenEndEpisode(States states),
 	private RandomPlayer random_player_red;
 	private HumanPlayer  human_player_red;
 	private HandCodedPlayer hand_coded_player_red;
@@ -104,7 +109,7 @@ public class EpisodeController : MonoBehaviour {
 		iterating = true;
 		drawing = true;
 	}
-		
+
 	public void SetEnvironmentAndPlayer(int player_type_red, int player_type_green){
 		env = new Environment ();
 		states = env.states;
